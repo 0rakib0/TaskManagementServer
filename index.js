@@ -42,6 +42,25 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/rending-task/:email', async(req, res) =>{
+            const email = req.params.email
+            const filter = {
+                $and: [
+                    {user: email},
+                    {status: 'Pending'}
+                ]
+            }
+            const result = await taskCollection.find(filter).toArray()
+            res.send(result)
+        })
+
+        app.delete('/task-delete/:id', async(req, res) =>{
+            const Id = req.params.id
+            const query = {_id: new ObjectId(Id)}
+            const result = await taskCollection.deleteOne(query)
+            res.send(result)
+        })
+
         app.post('/task', async(req, res) =>{
             const Task = req.body
             const result = await taskCollection.insertOne(Task)
