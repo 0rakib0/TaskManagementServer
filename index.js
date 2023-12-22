@@ -35,11 +35,20 @@ async function run() {
         const taskCollection = client.db('taskDB').collection('task')
 
 
+        app.get('/tasks/:email', async(req, res) =>{
+            const email = req.params.email
+            const filter = {user: email}
+            const result = await taskCollection.find(filter).toArray()
+            res.send(result)
+        })
+
         app.post('/task', async(req, res) =>{
             const Task = req.body
             const result = await taskCollection.insertOne(Task)
             res.send(result)
         })
+
+
 
 
 
