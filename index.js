@@ -55,6 +55,21 @@ async function run() {
             res.send(result)
         })
 
+
+        app.get('/countPending/:email', async(req, res) =>{
+            const email = req.params.email
+            const filter = {
+                $and: [
+                    {user: email},
+                    {status: 'Pending'}
+                ]
+            }
+            const result = await taskCollection.countDocuments(filter)
+            res.send({result})
+        })
+
+
+
         app.get('/complate-task/:email', async(req, res) =>{
             const email = req.params.email
             const filter = {
@@ -65,6 +80,18 @@ async function run() {
             }
             const result = await taskCollection.find(filter).toArray()
             res.send(result)
+        })
+
+        app.get('/countComplate/:email', async(req, res) =>{
+            const email = req.params.email
+            const filter = {
+                $and: [
+                    {user: email},
+                    {status: 'Complate'}
+                ]
+            }
+            const result = await taskCollection.countDocuments(filter)
+            res.send({result})
         })
 
         app.get('/progress-task/:email', async(req, res) =>{
@@ -78,6 +105,20 @@ async function run() {
             const result = await taskCollection.find(filter).toArray()
             res.send(result)
         })
+
+
+        app.get('/countPrograse/:email', async(req, res) =>{
+            const email = req.params.email
+            const filter = {
+                $and: [
+                    {user: email},
+                    {status: 'Progress'}
+                ]
+            }
+            const result = await taskCollection.countDocuments(filter)
+            res.send({result})
+        })
+
 
         app.delete('/task-delete/:id', async(req, res) =>{
             const Id = req.params.id
