@@ -43,6 +43,32 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/signle-task/:id', async(req, res) =>{
+            const Id = req.params.id
+            const query = {_id: new ObjectId(Id)}
+            const result = await taskCollection.findOne(query)
+            res.send(result)
+            
+        })
+
+        app.put('/update-task/:id', async(req, res) =>{
+            const Id = req.params.id
+            const taskData = req.body
+            const filter = {_id: new ObjectId(Id)}
+            const UpdateTask = {
+                $set: {
+                    title: taskData.title,
+                    description: taskData.description,
+                    deadline: taskData.deadline,
+                    priority: taskData.priority,
+                    status: taskData.status
+                }
+            }
+            const result = await taskCollection.updateOne(filter, UpdateTask)
+            res.send(result)
+        })
+
+
         app.get('/rending-task/:email', async(req, res) =>{
             const email = req.params.email
             const filter = {
@@ -143,6 +169,11 @@ async function run() {
             const email = req.params.email
             const query = {email: email}
             const result = await userCollection.findOne(query)
+            res.send(result)
+        })
+
+        app.get('/all-user', async(req, res) =>{
+            const result = await userCollection.find().toArray()
             res.send(result)
         })
 
